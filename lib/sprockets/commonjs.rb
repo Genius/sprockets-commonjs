@@ -48,6 +48,12 @@ module Sprockets
     end
   end
 
-  register_postprocessor 'application/javascript', CommonJS
-  append_path File.expand_path('../../../assets', __FILE__)
+  if respond_to? :register_postprocessor 
+    register_postprocessor 'application/javascript', CommonJS
+    append_path File.expand_path('../../../assets', __FILE__)
+  else
+    environment = Sprockets::Environment.new(Dir.pwd)
+    environment.register_postprocessor 'application/javascript', CommonJS
+    environment.append_path File.expand_path('../../../assets', __FILE__)
+  end
 end
